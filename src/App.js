@@ -1,6 +1,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
-import { Carousel, Grid } from '@lightningjs/ui'
+import { Carousel, Grid, List } from '@lightningjs/ui'
 import { MoviePoster, LoadMovies } from './Movie'
+import { CarouselRow } from './CarouselRow'
 
 export default class App extends Lightning.Component {
   static getFonts() {
@@ -9,25 +10,40 @@ export default class App extends Lightning.Component {
 
   static _template() {
     return {
+    
       Background:
       {
-        w: window.innerWidth,
-        h: MoviePoster.height * 10 *2 * 1.5,
+        w: 1920,
+        h: 10 * CarouselRow.height + (window.innerWidth / 1.777777778),//to fit aspect ratio of 19:9
         rect: true,
-        color: 0xff9755AE,
+        // color: 0xff9755AE,
+        rect:true,
+        src: 'static/images/background.png'
       },
-     
-      Row1: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row2: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row3: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row4: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row5: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row6: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row7: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row8: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row9: {  w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-      Row10: { w: window.innerWidth, h: MoviePoster.height, itemType: MoviePoster, type: Carousel, direction: 'row' },
-
+      Header:
+      {
+          x:0,y:20,
+          h:200,
+          w:window.innerWidth,
+          rect:true,
+          text: {
+            text:"Velope Test\n Hederson carrasquero ",
+            fontSize: 32,
+            textAlign: 'right',
+            textColor: 0xffffffff,
+            maxLines:3,
+        },
+        mountX: 0,
+        mountY: 0
+      },
+      ColumnList:
+      {
+        y: 200,
+        h: CarouselRow.height + 100 + CarouselRow.margin,
+        direction: 'column',
+        type: List,
+        itemType: CarouselRow
+      }
     }
   }
 
@@ -39,40 +55,27 @@ export default class App extends Lightning.Component {
   }
   _setup() {
     for (let i = 1; i <= 10; i++) {
-      LoadMovies(i).then(moviesList => {
-        console.log(moviesList)
-        const movies = moviesList.map((movie) => {
-
-          return { info: movie }
-        })
-        let tagName = 'Row' + i
-        this.tag(tagName).patch({
-          y: (100+MoviePoster.height * (i - 1) * 2),
-          scroll : 0.1,
-          x:100,
-        });
-        this.tag(tagName).add(movies);
-      });
+      this.tag('ColumnList').add({ page: i })
     }
   }
   _getFocused() {
-    this.patch({ y:100-(MoviePoster.height * (this.index - 1)*2) })
-    return this.tag('Row' + this.index);
+    // this.patch({ y: 100 - (MoviePoster.height * (this.index - 1) * 2) })
+    return this.tag('ColumnList');
   }
-  _handleUp() {
-    if (this.index <= 1)
-      this.index = 10;
-    else
-      this.index--;
-    this._getFocused();
-  }
-  _handleDown() {
-    if (this.index >= 10)
-      this.index = 1;
-    else
-      this.index++;
-    this._getFocused();
-  }
+  // _handleUp() {
+  //   if (this.index <= 1)
+  //     this.index = 10;
+  //   else
+  //     this.index--;
+  //   this._getFocused();
+  // }
+  // _handleDown() {
+  //   if (this.index >= 10)
+  //     this.index = 1;
+  //   else
+  //     this.index++;
+  //   this._getFocused();
+  // }
 }
 
 

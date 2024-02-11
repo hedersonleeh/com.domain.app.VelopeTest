@@ -1,55 +1,71 @@
 const PATH = "https://api.themoviedb.org/3/discover/movie?";
 import { Lightning, Utils } from '@lightningjs/sdk'
+import App from './App';
 
 export class MoviePoster extends Lightning.Component {
     static _template() {
         return {
+         
+            Background:
+            {
+                y: h => 0,
+                x: w => w / 2,
+                w: w => w, h: h => h,
+                mountX: .5,
+                rect: true,
+                shader: {
+                    type: Lightning.shaders.RoundedRectangle,
+                    radius: 3, blend: 1, fillColor: 0xff6B6B6B
+                }
+
+            },
             Image: {
                 w: w => w,
-                h: h => h,
-                shader: { type: Lightning.shaders.RoundedRectangle, radius: 4 }
+                h: h => h - 60,
+                x: w => w / 2,
+                mountX: .5,
 
             },
             Focus:
             {
                 alpha: 0,
-                x:0, y: 0,
-                w: w => w , h: h => h ,
+                x: 0, y: 0,
+                w: w => w, h: h => h,
                 rect:
                     true, shader: {
                         type: Lightning.shaders.RoundedRectangle,
-                        radius: 3, stroke: 10, strokeColor: 0xffffffff, blend: 1, fillColor: 0x00ffff21
+                        radius: 3, stroke: 3, strokeColor: 0xffffffff, blend: 1, fillColor: 0x00ffff21
                     }
             },
 
             Label:
             {
-                y: h => h,
+                y: h => h - 60,
                 x: w => w / 2,
-                w: w => w, h: h => h,
+                w: w => w - 20, h: h => h,
                 text: {
                     fontSize: 16,
                     textAlign: 'left',
-                    textColor: 0xff000000,
+                    textColor: 0xffffffff,
+                    maxLines:3,
                 },
                 mountX: .5,
                 mountY: 0
-            }
+            },
+
 
         }
     }
-    _init()
-    {
+    _init() {
         this._focusAnimation = this.animation(
             {
-                duration:.31416,
+                duration: .31416,
                 actions:
-                [
-                {p:'scale',v:{0:1,.75:1.6,1:1.5}},
-                {t:"Focus",p:'alpha',v:{0:0,1:1}},
-                {t:"Focus",p:'scale',v:{0:1.5,0.75:1,1:1}}
-
-                ]                
+                    [
+                        { p: 'scale', v: { 0: 1, .75: 1.6, 1: 1.5 } },
+                        { t: "Focus", p: 'alpha', v: { 0: 0, 1: 1 } },
+                        { t: "Focus", p: 'scale', v: { 0: 1.5, 0.75: 1, 1: 1 } },
+                    ]
             })
     }
     _firstActive() {
@@ -64,7 +80,7 @@ export class MoviePoster extends Lightning.Component {
         })
     }
     _focus() {
-        if(this._focusAnimation) {
+        if (this._focusAnimation) {
             this._focusAnimation.start();
         }
     }
