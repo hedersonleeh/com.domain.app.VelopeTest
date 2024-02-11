@@ -48,7 +48,7 @@ export default class App extends Lightning.Component {
         let tagName = 'Row' + i
         this.tag(tagName).patch({
           y: (100+MoviePoster.height * (i - 1) * 2),
-          scroll : 0,
+          scroll : 0.1,
           x:100,
         });
         this.tag(tagName).add(movies);
