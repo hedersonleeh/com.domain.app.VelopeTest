@@ -1,0 +1,6 @@
+{
+  "name": "Velope Test",
+  "identifier": "com.domain.app.VelopeTest",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
