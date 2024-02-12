@@ -1,5 +1,5 @@
 import Lightning from "@lightningjs/sdk/src/Lightning";
-import { LoadMovies, MoviePoster } from "./Movie";
+import { LoadMovies, MoviePoster } from "./MoviePoster";
 import { Carousel } from "@lightningjs/ui";
 
 MoviePoster
@@ -19,13 +19,12 @@ export class CarouselRow extends Lightning.Component {
     }
 
     _init() {
-        LoadMovies(this.page).then(moviesList => {
-            console.log(moviesList)
+        LoadMovies(this.page, this.genre).then(moviesList => {
             const movies = moviesList.map((movie) => {
 
                 return { info: movie }
             })
-         
+
             this.tag('Row').add(movies);
         })
     }

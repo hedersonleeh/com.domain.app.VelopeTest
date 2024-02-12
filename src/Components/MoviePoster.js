@@ -1,7 +1,16 @@
-const PATH = "https://api.themoviedb.org/3/discover/movie?";
+const MOVIELIST = "https://api.themoviedb.org/3/discover/movie?";
+const GENRE = 'https://api.themoviedb.org/3/genre?';
 import { Lightning, Utils } from '@lightningjs/sdk'
-import App from './App';
+import App from '../App';
 
+const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MWNjYTUyZTAwYzM0YTRhNDYyOTAyMmJlZDBjMjZkNiIsInN1YiI6IjY1Yzc5ZmZhY2U2YzRjMDE0OWI4OTliMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VOae1ORrrAb895Q1r3kMOTb58mVi98QK1oyHKnB-ywc'
+    }
+  };
+  
 export class MoviePoster extends Lightning.Component {
     static _template() {
         return {
@@ -101,15 +110,29 @@ export class MoviePoster extends Lightning.Component {
 }
 
 
-export async function LoadMovies(page) {
+export async function LoadMovies(page,genre) {
 
     let apiKey = "api_key=81cca52e00c34a4a4629022bed0c26d6";
     let includePage = "&page=" + page;
-    let url = PATH.concat(apiKey, includePage);
+    let includeGenre = "&with_genres=" + genre;
+    if(genre <= 0)
+        includeGenre ='';
+    let url = MOVIELIST.concat(apiKey, includePage,includeGenre);
     let reponse = await fetch(url);
+    let json = await reponse.json();
+    // console.log(json);
+
+    return json.results;
+
+}
+export async function LoadGenre() {
+
+    let apiKey = "api_key=81cca52e00c34a4a4629022bed0c26d6";
+    let url = GENRE.concat(apiKey);
+    let reponse = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
     let json = await reponse.json();
     console.log(json);
 
-    return json.results;
+    return json;
 
 }
