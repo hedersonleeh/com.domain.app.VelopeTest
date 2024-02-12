@@ -1,5 +1,5 @@
 import { LoadMovies } from "../Components/MoviePoster"
-import {Home,SplashScreen} from "../pages"
+import {Home,MovieDescription,SplashScreen} from "../pages"
 
 export default {
     root: 'Home',
@@ -24,8 +24,20 @@ export default {
                 }
             },
             {
+                path:'Home/Description',
+                component:MovieDescription
+            },
+            {
                 path: '$',
                 component: SplashScreen
+            },
+            {
+                path: '*',
+                component: MovieDescription
+            },
+            {
+                path: '!',
+                component: MovieDescription
             },
         ],
         beforeEachRoute: async(from ,to)=>{

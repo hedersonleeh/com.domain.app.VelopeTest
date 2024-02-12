@@ -83,7 +83,12 @@ export default class Home extends Lightning.Component {
   }
   _handleEnter() {
     if (this.focus === 'ColumnList') {
-   console.log(   this.GetMovieSelected())
+      console.log(this.GetMovieSelected())
+      Router.navigate('Home/Description', { info: this.GetMovieSelected() }, true)
+    }
+    if(this.focus ==='Widgets')
+    {
+      this._setState('SelectionMovies')
     }
   }
   GetMovieSelected() {
